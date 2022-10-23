@@ -11,13 +11,13 @@
 		B0078D5E28F6955B0097D4A0 /* MainView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0078D5D28F6955B0097D4A0 /* MainView.swift */; };
 		B0078D6028F6955C0097D4A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0078D5F28F6955C0097D4A0 /* Assets.xcassets */; };
 		B0078D6328F6955C0097D4A0 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B0078D6228F6955C0097D4A0 /* Preview Assets.xcassets */; };
-		B04121A728FD56A800589414 /* MatchTimeCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04121A628FD56A800589414 /* MatchTimeCategory.swift */; };
 		B04121A928FD56BA00589414 /* MatchFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04121A828FD56BA00589414 /* MatchFormat.swift */; };
 		B04121AB28FD56D600589414 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04121AA28FD56D600589414 /* Team.swift */; };
 		B04121AD28FD56E300589414 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04121AC28FD56E300589414 /* Match.swift */; };
 		B04121AF28FD570D00589414 /* MatchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04121AE28FD570D00589414 /* MatchListCell.swift */; };
 		B0AE52592904A806009157CD /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B0AE52582904A806009157CD /* Kingfisher */; };
 		B0AE525B2904AED7009157CD /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AE525A2904AED7009157CD /* API.swift */; };
+		B0AE525D2904BE54009157CD /* MatchStatusList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AE525C2904BE54009157CD /* MatchStatusList.swift */; };
 		B0BFD0AC28F6DFA200F1C1D8 /* GameList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BFD0AB28F6DFA200F1C1D8 /* GameList.swift */; };
 		B0BFD0AE28F6E02C00F1C1D8 /* MatchList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BFD0AD28F6E02C00F1C1D8 /* MatchList.swift */; };
 		B0E849E62900276200BDFB56 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E849E52900276200BDFB56 /* Date.swift */; };
@@ -30,12 +30,12 @@
 		B0078D5D28F6955B0097D4A0 /* MainView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainView.swift; sourceTree = "<group>"; };
 		B0078D5F28F6955C0097D4A0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B0078D6228F6955C0097D4A0 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
-		B04121A628FD56A800589414 /* MatchTimeCategory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchTimeCategory.swift; sourceTree = "<group>"; };
 		B04121A828FD56BA00589414 /* MatchFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchFormat.swift; sourceTree = "<group>"; };
 		B04121AA28FD56D600589414 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		B04121AC28FD56E300589414 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
 		B04121AE28FD570D00589414 /* MatchListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchListCell.swift; sourceTree = "<group>"; };
 		B0AE525A2904AED7009157CD /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		B0AE525C2904BE54009157CD /* MatchStatusList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchStatusList.swift; sourceTree = "<group>"; };
 		B0BFD0AB28F6DFA200F1C1D8 /* GameList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameList.swift; sourceTree = "<group>"; };
 		B0BFD0AD28F6E02C00F1C1D8 /* MatchList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchList.swift; sourceTree = "<group>"; };
 		B0E849E52900276200BDFB56 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
@@ -98,6 +98,7 @@
 				B0BFD0AD28F6E02C00F1C1D8 /* MatchList.swift */,
 				B04121AE28FD570D00589414 /* MatchListCell.swift */,
 				B0BFD0AB28F6DFA200F1C1D8 /* GameList.swift */,
+				B0AE525C2904BE54009157CD /* MatchStatusList.swift */,
 			);
 			path = MatchList;
 			sourceTree = "<group>";
@@ -105,7 +106,6 @@
 		B04121A528FD569B00589414 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				B04121A628FD56A800589414 /* MatchTimeCategory.swift */,
 				B04121A828FD56BA00589414 /* MatchFormat.swift */,
 				B04121AA28FD56D600589414 /* Team.swift */,
 				B04121AC28FD56E300589414 /* Match.swift */,
@@ -216,6 +216,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0078D5E28F6955B0097D4A0 /* MainView.swift in Sources */,
+				B0AE525D2904BE54009157CD /* MatchStatusList.swift in Sources */,
 				B0E849E62900276200BDFB56 /* Date.swift in Sources */,
 				B0BFD0AC28F6DFA200F1C1D8 /* GameList.swift in Sources */,
 				B04121AF28FD570D00589414 /* MatchListCell.swift in Sources */,
@@ -224,7 +225,6 @@
 				B0078D5C28F6955B0097D4A0 /* YoloApp.swift in Sources */,
 				B0BFD0AE28F6E02C00F1C1D8 /* MatchList.swift in Sources */,
 				B04121A928FD56BA00589414 /* MatchFormat.swift in Sources */,
-				B04121A728FD56A800589414 /* MatchTimeCategory.swift in Sources */,
 				B0AE525B2904AED7009157CD /* API.swift in Sources */,
 				B0E849EA29002C4600BDFB56 /* MatchesModel.swift in Sources */,
 			);

@@ -11,39 +11,28 @@ struct MatchListSection: Identifiable {
     
     let id: UUID = .init()
     
-    let timeCategory: MatchTimeCategory
+    let timeCategory: Match.Status
     let matches: [Match]
     
 }
 
 struct MatchList: View {
     
-    let sections: [MatchListSection]
+    let matches: [Match]
     
     var body: some View {
-        List(sections) { section in
-            Section {
-                ForEach(section.matches) { match in
-                    MatchListCell(match: match)
-                }
-                
-            } header: {
-                Text(section.timeCategory.title)
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
-            }
+        List(matches) { match in
+            MatchListCell(match: match)
         }.listStyle(.sidebar)
     }
 }
 
 struct MatchList_Previews: PreviewProvider {
     static var previews: some View {
-        let sections: [MatchListSection] = [
-            .init(timeCategory: .live, matches: [
-                Match.testMatch,
-                Match.testMatch,
-                Match.testMatch
-            ])
-        ]
-        MatchList(sections: sections)
+        MatchList(matches: [
+            Match.testMatch,
+            Match.testMatch,
+            Match.testMatch
+        ])
     }
 }

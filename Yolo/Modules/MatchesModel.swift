@@ -11,63 +11,57 @@ import Foundation
 final class MatchesModel: ObservableObject {
     
     private var matchesRequest: AnyCancellable?
+    private var cancellabels: [AnyCancellable] = []
     
-    @Published var sections: [MatchListSection] = []
+    let availableMatchStatuses: [Match.Status] = [
+        .running, .notStarted, .finished
+    ]
+    
+    @Published var currentGame: API.Game = .dota2
+    @Published var selectedMatchStatus: Match.Status = .running
+    
+    @Published var matches: [Match] = []
     @Published var isLoading = false
     
-    func getMatches(game: API.Game) {
+    init() {
+        Publishers.CombineLatest($selectedMatchStatus, $currentGame)
+            .dropFirst(1)
+            .sink { [weak self] selectedMatchStatus, game in
+            self?.getMatches(game: game, status: selectedMatchStatus)
+        }.store(in: &cancellabels)
+    }
+    
+    func getMatches(game: API.Game = .dota2, status: Match.Status? = .running) {
         matchesRequest?.cancel()
         isLoading = true
         
-        matchesRequest = createMatchesPublisher(game: game)
+        matchesRequest = createMatchesPublisher(game: game, status: status)
             .receive(on: DispatchQueue.main)
             .sink(receiveCompletion: { [weak self] completion in
                 self?.isLoading = false
-                print(completion)
-            }, receiveValue: { [weak self] sections in
-                guard !sections.isEmpty else {
+            }, receiveValue: { [weak self] matches in
+                guard !matches.isEmpty else {
+                    self?.matches = []
                     return
                 }
                 
-                DispatchQueue.main.async {
-                    self?.sections = sections
-                }
+                self?.matches = matches
             })
     }
     
-    private func createPublisher(game: API.Game, status: Match.Status) -> AnyPublisher<[Match], Error> {
-        let request = API.Request(game: game, status: status)
-        return API.createMatchPublisher(request: request).eraseToAnyPublisher()
-    }
-    
-    private func createMatchesPublisher(game: API.Game) -> AnyPublisher<[MatchListSection], Error> {
-        let a = createPublisher(game: game, status: .running)
-        let b = createPublisher(game: game, status: .notStarted)
-        let c = createPublisher(game: game, status: .finished)
+    private func createMatchesPublisher(game: API.Game, status: Match.Status? = nil) -> AnyPublisher<[Match], Error> {
+        var schedule: API.Request.Schedule?
         
-        return Publishers.CombineLatest3(a, b, c).map { running, notStarted, finished in
-            var sections: [MatchListSection] = []
+        if let status = status {
+            schedule = API.Request.Schedule.ascending
             
-            if !running.isEmpty {
-                sections += [
-                    .init(timeCategory: .live, matches: running)
-                ]
+            if status == .canceled || status == .finished {
+                schedule = .descending
             }
-            
-            if !notStarted.isEmpty {
-                sections += [
-                    .init(timeCategory: .comming, matches: notStarted)
-                ]
-            }
-            
-            if !notStarted.isEmpty {
-                sections += [
-                    .init(timeCategory: .finished, matches: finished)
-                ]
-            }
-            
-            return sections
-        }.eraseToAnyPublisher()
+        }
+        
+        let request = API.Request(game: game, status: status, schedule: schedule)
+        return API.createMatchPublisher(request: request).eraseToAnyPublisher()
     }
     
 }

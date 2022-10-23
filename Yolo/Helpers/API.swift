@@ -8,6 +8,19 @@
 import Combine
 import Foundation
 
+extension API.Request {
+    
+    enum Schedule: String {
+        case ascending
+        case descending
+        
+        var sortParam: String {
+            return self == .ascending ? "scheduled_at" : "-scheduled_at"
+        }
+    }
+    
+}
+
 final class API {
     
     enum Game: String, Identifiable {
@@ -35,11 +48,17 @@ final class API {
         let game: Game
         let status: Match.Status?
         
+        let schedule: Schedule?
+        
         var url: URL {
             var components = URLComponents(string: "https://api.pandascore.co/\(game.rawValue)/matches")!
-            var queryItems: [URLQueryItem] = [
-                .init(name: "sort", value: "begin_at")
-            ]
+            var queryItems: [URLQueryItem] = []
+            
+            if let schedule = schedule {
+                queryItems += [
+                    .init(name: "sort", value: schedule.sortParam)
+                ]
+            }
             
             if let status = status {
                 queryItems += [
@@ -60,6 +79,7 @@ final class API {
     }
     
     static func createMatchPublisher(request: Request) -> AnyPublisher<[Match], Error> {
+        print(request.url)
         return URLSession.shared.dataTaskPublisher(for: request.url)
             .receive(on: DispatchQueue.global(qos: .background))
             .map(\.data)

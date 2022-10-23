@@ -13,8 +13,6 @@ final class GameListModel: ObservableObject {
         .dota2, .csgo
     ]
     
-    @Published var currentGame: API.Game = .dota2
-    
 }
 
 struct MainView: View {
@@ -26,8 +24,11 @@ struct MainView: View {
         NavigationView {
             GeometryReader { geometry in
                 VStack(alignment: .leading) {
-                    GameList(games: gameListModel.games, currentGame: $gameListModel.currentGame)
+                    GameList(games: gameListModel.games, selectedGame: $matchesModel.currentGame)
                         .padding(.leading, 8)
+                    
+                    MatchStatusList(mathStatuses: matchesModel.availableMatchStatuses, selectedStatus: $matchesModel.selectedMatchStatus)
+                    
                     if matchesModel.isLoading {
                         ZStack(alignment: .center) {
                             ProgressView()
@@ -35,14 +36,12 @@ struct MainView: View {
                         .frame(width: geometry.size.width)
                         .frame(maxHeight: .infinity)
                     } else {
-                        MatchList(sections: matchesModel.sections)
+                        MatchList(matches: matchesModel.matches)
                     }
                 }
             }.navigationTitle("Events")
         }.onAppear {
-            matchesModel.getMatches(game: .dota2)
-        }.onChange(of: gameListModel.currentGame) { game in
-            matchesModel.getMatches(game: game)
+            matchesModel.getMatches()
         }
         
     }

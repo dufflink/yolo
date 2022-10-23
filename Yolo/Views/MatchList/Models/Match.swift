@@ -9,13 +9,43 @@ import Foundation
 
 extension Match {
     
-    enum Status: String, Codable {
+    enum Status: String, Codable, Identifiable {
         
         case running
         case finished
         
         case canceled
         case notStarted = "not_started"
+        
+        var id: UUID {
+            return .init()
+        }
+        
+        var title: String {
+            switch self {
+                case .running:
+                    return "Live"
+                case .finished:
+                    return "Finished"
+                case .canceled:
+                    return "Canceled"
+                case .notStarted:
+                    return "Comming soon"
+            }
+        }
+        
+        var order: Int {
+            switch self {
+                case .running:
+                    return 0
+                case .finished:
+                    return 2
+                case .canceled:
+                    return 3
+                case .notStarted:
+                    return 1
+            }
+        }
         
     }
     
