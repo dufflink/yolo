@@ -43,23 +43,34 @@ struct MatchList: View {
                     if let headerView = headerView {
                         headerView
                     }
+                    
                     if isLoading {
                         let frame = geometry.frame(in: .global)
                         ProgressView()
                             .position(x: frame.midX, y: frame.midY - 180)
                     } else {
-                        ForEach(matches) { match in
-                            VStack(alignment: .trailing) {
-                                MatchListCell(match: match)
-                                Rectangle()
-                                    .padding(.leading, 42)
-                                    .foregroundColor(Color.black.opacity(0.1))
-                                    .frame(height: 0.5)
-                            }
-                            .padding(.horizontal, 16)
+                        if matches.isEmpty {
+                            let frame = geometry.frame(in: .global)
+                            
+                            ZStack {
+                                Text("List is empty")
+                            }.frame(width: frame.width, height: frame.height - 180)
+                        } else {
+                            ForEach(Array(zip(matches.indices, matches)), id: \.0) { index, match in
+                                VStack(alignment: .trailing) {
+                                    MatchListCell(match: match)
+                                    
+                                    if index != matches.count - 1 {
+                                        Rectangle()
+                                            .padding(.leading, 42)
+                                            .foregroundColor(Color.black.opacity(0.1))
+                                            .frame(height: 0.5)
+                                    }
+                                }
+                            }.padding(.horizontal, 16)
+                            
+                            Color.clear.padding(.bottom, bottomInset)
                         }
-                        
-                        Color.clear.padding(.bottom, bottomInset)
                     }
                 }
             }
@@ -80,5 +91,10 @@ struct MatchList_Previews: PreviewProvider {
             Match.testMatch,
             Match.testMatch
         ], bottomInset: 0, isLoading: .constant(false))
+        .headerView {
+            GameList(games: [
+                .dota2, .csgo
+            ], selectedGame: .constant(.dota2))
+        }
     }
 }

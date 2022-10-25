@@ -64,7 +64,7 @@ struct MatchListCell: View {
                             .font(.system(size: 12, weight: .medium))
                     }
                 }
-            }.padding(.vertical, 20)
+            }.padding(.vertical, 12)
         }
     }
     

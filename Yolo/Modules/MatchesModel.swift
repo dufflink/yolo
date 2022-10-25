@@ -17,6 +17,9 @@ final class MatchesModel: ObservableObject {
         .running, .notStarted, .finished
     ]
     
+    private var lastLoadedGame: API.Game = .dota2
+    private var lastLoadedStatus: Match.Status = .notStarted
+    
     @Published var currentGame: API.Game = .dota2
     @Published var selectedMatchStatus: Match.Status = .notStarted
     
@@ -27,11 +30,13 @@ final class MatchesModel: ObservableObject {
         Publishers.CombineLatest($selectedMatchStatus, $currentGame)
             .dropFirst(1)
             .sink { [weak self] selectedMatchStatus, game in
-            self?.getMatches(game: game, status: selectedMatchStatus)
+                if selectedMatchStatus != self?.lastLoadedStatus || game != self?.lastLoadedGame {
+                    self?.getMatches(game: game, status: selectedMatchStatus)
+                }
         }.store(in: &cancellabels)
     }
     
-    func getMatches(game: API.Game = .dota2, status: Match.Status? = .notStarted) {
+    func getMatches(game: API.Game = .dota2, status: Match.Status = .notStarted) {
         matchesRequest?.cancel()
         isLoading = true
         
@@ -40,6 +45,9 @@ final class MatchesModel: ObservableObject {
             .sink(receiveCompletion: { [weak self] completion in
                 self?.isLoading = false
             }, receiveValue: { [weak self] matches in
+                self?.lastLoadedGame = game
+                self?.lastLoadedStatus = status
+                
                 guard !matches.isEmpty else {
                     self?.matches = []
                     return

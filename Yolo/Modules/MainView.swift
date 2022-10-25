@@ -23,12 +23,10 @@ struct MainView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
-                GeometryReader { geometry in
-                    MatchList(matches: matchesModel.matches, bottomInset: 100, isLoading: $matchesModel.isLoading)
-                        .headerView {
-                            GameList(games: gameListModel.games, selectedGame: $matchesModel.currentGame)
-                        }
-                }.padding(.top, 48)
+                MatchList(matches: matchesModel.matches, bottomInset: 100, isLoading: $matchesModel.isLoading)
+                    .headerView {
+                        GameList(games: gameListModel.games, selectedGame: $matchesModel.currentGame)
+                    }.padding(.top, 48)
                 VStack {
                     Rectangle()
                         .foregroundColor(Color.white)
