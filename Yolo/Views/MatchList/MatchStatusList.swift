@@ -22,7 +22,7 @@ struct MatchStatusList: View {
                         .foregroundColor(Color.white)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
-                        .background(selectedStatus == mathStatus ? Color.blue : Color.black.opacity(0.2))
+                        .background(selectedStatus == mathStatus ? Color.blue : Color.gray)
                         .cornerRadius(20)
                         .onTapGesture {
                             selectedStatus = mathStatus

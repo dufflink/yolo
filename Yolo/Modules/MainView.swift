@@ -22,24 +22,23 @@ struct MainView: View {
     
     var body: some View {
         NavigationView {
-            GeometryReader { geometry in
-                VStack(alignment: .leading) {
-                    GameList(games: gameListModel.games, selectedGame: $matchesModel.currentGame)
-                        .padding(.leading, 8)
-                    
-                    MatchStatusList(mathStatuses: matchesModel.availableMatchStatuses, selectedStatus: $matchesModel.selectedMatchStatus)
-                    
-                    if matchesModel.isLoading {
-                        ZStack(alignment: .center) {
-                            ProgressView()
+            ZStack(alignment: .top) {
+                GeometryReader { geometry in
+                    MatchList(matches: matchesModel.matches, bottomInset: 100, isLoading: $matchesModel.isLoading)
+                        .headerView {
+                            GameList(games: gameListModel.games, selectedGame: $matchesModel.currentGame)
                         }
-                        .frame(width: geometry.size.width)
-                        .frame(maxHeight: .infinity)
-                    } else {
-                        MatchList(matches: matchesModel.matches)
-                    }
-                }
-            }.navigationTitle("Events")
+                }.padding(.top, 48)
+                VStack {
+                    Rectangle()
+                        .foregroundColor(Color.white)
+                        .frame(height: 48)
+                    Spacer()
+                    MatchStatusList(mathStatuses: matchesModel.availableMatchStatuses, selectedStatus: $matchesModel.selectedMatchStatus)
+                        .shadow(color: Color.black.opacity(0.15), radius: 12, x: 4, y: 4)
+                }.padding(.bottom, 48)
+            }
+            .ignoresSafeArea()
         }.onAppear {
             matchesModel.getMatches()
         }

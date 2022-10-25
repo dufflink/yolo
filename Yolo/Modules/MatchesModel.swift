@@ -18,7 +18,7 @@ final class MatchesModel: ObservableObject {
     ]
     
     @Published var currentGame: API.Game = .dota2
-    @Published var selectedMatchStatus: Match.Status = .running
+    @Published var selectedMatchStatus: Match.Status = .notStarted
     
     @Published var matches: [Match] = []
     @Published var isLoading = false
@@ -31,7 +31,7 @@ final class MatchesModel: ObservableObject {
         }.store(in: &cancellabels)
     }
     
-    func getMatches(game: API.Game = .dota2, status: Match.Status? = .running) {
+    func getMatches(game: API.Game = .dota2, status: Match.Status? = .notStarted) {
         matchesRequest?.cancel()
         isLoading = true
         

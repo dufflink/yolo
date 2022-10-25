@@ -30,7 +30,8 @@ struct GameList: View {
                     }
                 }
             }
-            .padding(8)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 8)
         }
     }
     
