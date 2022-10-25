@@ -53,6 +53,6 @@ struct GameList_Previews: PreviewProvider {
     static var previews: some View {
         GameList(games: [
             .dota2, .csgo, .valorant
-        ], selectedGame: .constant(.dota2))
+        ], selectedGame: .constant(.csgo))
     }
 }

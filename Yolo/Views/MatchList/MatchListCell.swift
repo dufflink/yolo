@@ -19,50 +19,33 @@ struct MatchListCell: View {
                     TeamView(team: match.opponents.first!.team)
                     TeamView(team: .tbd)
                 } else {
-                    ForEach(match.opponents) { opponent in
-                        TeamView(team: opponent.team)
+                    if match.status == .notStarted {
+                        ForEach(match.opponents) { opponent in
+                            TeamView(team: opponent.team)
+                        }
+                    } else {
+                        ForEach(match.opponents) { opponent in
+                            let score = match.score(teamID: opponent.team.id)
+                            let isWinner = match.winnderID == opponent.team.id
+                            
+                            TeamView(team: opponent.team, score: score, isWinner: isWinner)
+                        }
                     }
                 }
             }
             
             Spacer()
             
-            VStack {
-                VStack {
-                    switch match.status {
-                        case .notStarted:
-                            Text("BO\(match.numberOfGames)")
-                                .font(.system(size: 14, weight: .medium))
-                                .foregroundColor(Color.white)
-                                .padding(.horizontal, 6)
-                                .padding(.vertical, 2)
-                                .background(Color.orange)
-                                .cornerRadius(4)
-                        default:
-                            Text("BO\(match.numberOfGames)")
-                                .font(.system(size: 14, weight: .medium))
-                            HStack {
-                                Text("\(match.results.first?.score ?? 8):\(match.results.last?.score ?? 8)")
-                                    .padding(.horizontal, 6)
-                                    .foregroundColor(Color.white)
-                            }
-                            .background(Color.green)
-                            .cornerRadius(4)
-                    }
-                }
+            VStack(alignment: .trailing) {
+                Text("BO\(match.numberOfGames)")
+                    .roundedText(background: Color.orange)
                 
-                Spacer()
-                
-                if match.isLive {
-                    Text("LIVE")
-                        .font(.system(size: 15, weight: .semibold))
-                        .foregroundColor(Color.red)
-                } else {
-                    VStack {
-                        Text(match.startingTime)
-                            .foregroundColor(Color.black.opacity(0.4))
-                            .font(.system(size: 12, weight: .medium))
-                    }
+                if match.status == .notStarted {
+                    Spacer()
+                    
+                    Text(match.startingTime)
+                        .foregroundColor(Color.black.opacity(0.4))
+                        .font(.system(size: 12, weight: .medium))
                 }
             }.padding(.vertical, 12)
         }
@@ -71,9 +54,12 @@ struct MatchListCell: View {
     struct TeamView: View {
         
         let team: Team
+                                
+        var score: Int? = nil
+        var isWinner = false
         
         var body: some View {
-            HStack(spacing: 0) {
+            HStack(spacing: 12) {
                 KFImage.url(URL(string: team.icon ?? ""))
                     .resizable()
                     .placeholder {
@@ -88,8 +74,14 @@ struct MatchListCell: View {
                     .frame(width: 32, height: 32)
                     .aspectRatio(contentMode: .fit)
                     .cornerRadius(8)
+                
+                if let score = score {
+                    Text("\(score)")
+                        .roundedText(background: isWinner ? Color.green : Color.gray)
+                }
+                
                 Text(team.name)
-                    .padding(.leading, 12)
+                    .padding(.leading, -4)
             }.padding(.vertical, 8)
         }
         
@@ -99,7 +91,7 @@ struct MatchListCell: View {
 
 struct MatchListCell_Previews: PreviewProvider {
     static var previews: some View {
-        MatchListCell(match: Match.testMatch)
+        MatchListCell(match: Match.getTestMatch(status: .finished))
             .background(Color.gray.opacity(0.3))
     }
 }

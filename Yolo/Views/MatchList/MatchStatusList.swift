@@ -16,13 +16,13 @@ struct MatchStatusList: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
-                ForEach(mathStatuses) { mathStatus in
+                ForEach(mathStatuses.reversed()) { mathStatus in
                     Text(mathStatus.title)
                         .font(.system(size: 18, weight: .regular))
                         .foregroundColor(Color.white)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
-                        .background(selectedStatus == mathStatus ? Color.blue : Color.gray)
+                        .background(selectedStatus == mathStatus ? (mathStatus == .running ? Color.red : Color.blue) : Color.gray)
                         .cornerRadius(20)
                         .onTapGesture {
                             selectedStatus = mathStatus
@@ -37,7 +37,7 @@ struct MatchStatusList: View {
 struct MatchStatusList_Previews: PreviewProvider {
     static var previews: some View {
         MatchStatusList(mathStatuses: [
-            .running, .notStarted, .canceled, .finished
+            .running, .notStarted, .finished
         ], selectedStatus: .constant(.running))
     }
 }

@@ -30,7 +30,7 @@ extension Match {
                 case .canceled:
                     return "Canceled"
                 case .notStarted:
-                    return "Comming soon"
+                    return "Soon"
             }
         }
         
@@ -82,6 +82,8 @@ struct Match: Identifiable, Codable {
     let numberOfGames: Int
     let beginDate: Date
     
+    let winnderID: Int?
+    
     enum CodingKeys: String, CodingKey {
 
         case id
@@ -93,17 +95,20 @@ struct Match: Identifiable, Codable {
         case numberOfGames = "number_of_games"
         case beginDate = "begin_at"
         
+        case winnderID = "winner_id"
+        
     }
     
     // MARK: - Life Cycle
     
-    init(id: Int, opponents: [Opponent], status: Status, results: [Result], numberOfGames: Int, beginDate: Date) {
+    init(id: Int, opponents: [Opponent], status: Status, results: [Result], numberOfGames: Int, beginDate: Date, winnderID: Int? = nil) {
         self.id = id
         self.opponents = opponents
         self.status = status
         self.results = results
         self.numberOfGames = numberOfGames
         self.beginDate = beginDate
+        self.winnderID = winnderID
     }
     
     init(from decoder: Decoder) throws {
@@ -116,6 +121,7 @@ struct Match: Identifiable, Codable {
         results = try container.decode([Match.Result].self, forKey: .results)
 
         numberOfGames = try container.decode(Int.self, forKey: .numberOfGames)
+        winnderID = try? container.decode(Int.self, forKey: .winnderID)
 
         if let iso8601 = try? container.decode(String.self, forKey: .beginDate) {
             beginDate = .init(iso8601: iso8601)
@@ -126,19 +132,19 @@ struct Match: Identifiable, Codable {
     
     // MARK: - Properties
     
-    var isLive: Bool {
-        return status == .running
+    func score(teamID: Int) -> Int? {
+        return results.first { $0.teamID == teamID }?.score
     }
     
     var startingTime: String {
         let calendar = Calendar.current
 
         if calendar.isDateInToday(beginDate) {
-            return time
+            return "Today, \(time)"
         }
 
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd MMM"
+        dateFormatter.dateFormat = "dd MMM, HH:mm"
 
         return dateFormatter.string(from: beginDate)
     }
@@ -158,6 +164,16 @@ extension Match {
             .init(team: .init(id: 1, icon: "https", name: "Natus Vincere", acronym: "NAVI")),
             .init(team: .init(id: 2, icon: "https", name: "Virtus Pro", acronym: "VP"))
         ], status: .notStarted, results: [
+            .init(score: 2, teamID: 1),
+            .init(score: 0, teamID: 2)
+        ], numberOfGames: 3, beginDate: .init())
+    }
+    
+    static func getTestMatch(status: Status) -> Match {
+        return .init(id: 1234, opponents: [
+            .init(team: .init(id: 1, icon: "https", name: "Natus Vincere", acronym: "NAVI")),
+            .init(team: .init(id: 2, icon: "https", name: "Virtus Pro", acronym: "VP"))
+        ], status: status, results: [
             .init(score: 2, teamID: 1),
             .init(score: 0, teamID: 2)
         ], numberOfGames: 3, beginDate: .init())
