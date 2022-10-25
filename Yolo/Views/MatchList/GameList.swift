@@ -18,12 +18,24 @@ struct GameList: View {
             HStack {
                 ForEach(games) { game in
                     ZStack {
-                        Circle()
-                            .frame(width: 80, height: 80)
-                            .foregroundColor(selectedGame == game ? Color.blue : Color.gray.opacity(0.4))
+                        if selectedGame == game {
+                            Circle()
+                                .fill(
+                                    LinearGradient(colors: game.gradientColors, startPoint: .top, endPoint: .bottom)
+                                )
+                                .frame(width: 80, height: 80)
+                        } else {
+                            Circle()
+                                .fill(
+                                    Color.gray.opacity(0.4)
+                                )
+                                .frame(width: 80, height: 80)
+                        }
+                        
                         Image(game.iconName)
                             .resizable()
-                            .padding(15)
+                            .aspectRatio(contentMode: .fit)
+                            .padding(14)
                             .frame(width: 70, height: 70)
                     }.onTapGesture {
                         selectedGame = game
@@ -40,7 +52,7 @@ struct GameList: View {
 struct GameList_Previews: PreviewProvider {
     static var previews: some View {
         GameList(games: [
-            .dota2, .csgo
+            .dota2, .csgo, .valorant
         ], selectedGame: .constant(.dota2))
     }
 }

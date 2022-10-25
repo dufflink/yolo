@@ -6,7 +6,7 @@
 //
 
 import Combine
-import Foundation
+import SwiftUI
 
 extension API.Request {
     
@@ -22,26 +22,6 @@ extension API.Request {
 }
 
 final class API {
-    
-    enum Game: String, Identifiable {
-        
-        var id: UUID {
-            return .init()
-        }
-        
-        case dota2
-        case csgo
-        
-        var iconName: String {
-            switch self {
-                case .dota2:
-                    return "Dota2"
-                case .csgo:
-                    return "CSGO"
-            }
-        }
-        
-    }
     
     struct Request {
         
