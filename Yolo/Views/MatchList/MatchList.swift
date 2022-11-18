@@ -10,8 +10,6 @@ import SwiftUI
 struct MatchListSection: Identifiable {
     
     let id: UUID = .init()
-    
-    let timeCategory: Match.Status
     let matches: [Match]
     
 }
