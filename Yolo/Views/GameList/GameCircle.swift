@@ -36,16 +36,6 @@ struct GameCircle: View {
                 .padding(14)
                 .frame(width: 70, height: 70)
         }
-        .scaleEffect(isPressed ? 0.9 : 1)
-        .pressEvents(onPress: {
-            withAnimation(.easeIn(duration: 0.25)) {
-                isPressed = true
-            }
-        }, onRelease: {
-            withAnimation(.easeInOut(duration: 0.25)) {
-                isPressed = false
-            }
-        })
     }
     
 }

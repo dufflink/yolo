@@ -19,12 +19,12 @@ struct GameList: View {
                 ForEach(games) { game in
                     ZStack {
                         GameCircle(game: game, isSelected: game == selectedGame)
-                            .pressEvents(onRelease: {
+                            .onTapGesture {
                                 if game != selectedGame {
                                     playSimpleHaptic()
                                     selectedGame = game
                                 }
-                            })
+                            }
                     }
                     
                 }

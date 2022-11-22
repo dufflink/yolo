@@ -57,7 +57,9 @@ struct MatchListCell: View {
                     .lineLimit(1)
                     .foregroundColor(Color.gray.opacity(0.8))
                     .font(.system(size: 14))
-                Image(systemName: "trophy.fill")
+                Image("Cup")
+                    .resizable()
+                    .frame(width: 14, height: 14)
                     .foregroundColor(Color.gray.opacity(0.6))
                 
             }
@@ -81,7 +83,7 @@ struct MatchListCell: View {
                         .resizable()
                         .placeholder {
                             Rectangle()
-                                .foregroundColor(Color.black.opacity(0.1))
+                                .foregroundColor(Color.blackWhite.opacity(0.1))
                                 .frame(width: 32, height: 32)
                         }
                         .cacheOriginalImage()

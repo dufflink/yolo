@@ -36,7 +36,7 @@ extension API {
                 case .dota2:
                     return [.red, .orange]
                 case .csgo:
-                    return [.blue, .black]
+                    return [.blue, .purple]
                 case .valorant:
                     return [.purple, .pink]
             }
