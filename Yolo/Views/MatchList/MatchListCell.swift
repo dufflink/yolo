@@ -96,7 +96,7 @@ struct MatchListCell: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 32, height: 32)
-                        .foregroundColor(Color.black.opacity(0.2))
+                        .foregroundColor(Color.blackWhite.opacity(0.2))
                 }
                 
                 if let score = score {

@@ -84,7 +84,7 @@ struct MatchList: View {
                                         if match.id != section.matches.last?.id {
                                             Rectangle()
                                                 .padding(.leading, 42)
-                                                .foregroundColor(Color.black.opacity(0.1))
+                                                .foregroundColor(Color.blackWhite.opacity(0.1))
                                                 .frame(height: 0.5)
                                         }
                                     }

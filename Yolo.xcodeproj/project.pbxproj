@@ -23,6 +23,7 @@
 		B0AE52592904A806009157CD /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B0AE52582904A806009157CD /* Kingfisher */; };
 		B0AE525B2904AED7009157CD /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AE525A2904AED7009157CD /* API.swift */; };
 		B0AE525D2904BE54009157CD /* MatchStatusList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AE525C2904BE54009157CD /* MatchStatusList.swift */; };
+		B0B98840292D575E00DB12C2 /* Color.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0B9883F292D575E00DB12C2 /* Color.swift */; };
 		B0BFD0AC28F6DFA200F1C1D8 /* GameList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BFD0AB28F6DFA200F1C1D8 /* GameList.swift */; };
 		B0BFD0AE28F6E02C00F1C1D8 /* MatchList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0BFD0AD28F6E02C00F1C1D8 /* MatchList.swift */; };
 		B0E1B76A29102AF30020505C /* ButtonPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E1B76929102AF30020505C /* ButtonPress.swift */; };
@@ -48,6 +49,7 @@
 		B0995E9C292CD9E5003AE764 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B0AE525A2904AED7009157CD /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		B0AE525C2904BE54009157CD /* MatchStatusList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchStatusList.swift; sourceTree = "<group>"; };
+		B0B9883F292D575E00DB12C2 /* Color.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color.swift; sourceTree = "<group>"; };
 		B0BFD0AB28F6DFA200F1C1D8 /* GameList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameList.swift; sourceTree = "<group>"; };
 		B0BFD0AD28F6E02C00F1C1D8 /* MatchList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchList.swift; sourceTree = "<group>"; };
 		B0E1B76929102AF30020505C /* ButtonPress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonPress.swift; sourceTree = "<group>"; };
@@ -167,6 +169,7 @@
 				B0AE525A2904AED7009157CD /* API.swift */,
 				B074F32B29082106003F0A84 /* API.Game.swift */,
 				B074F32D29085163003F0A84 /* Modifiers */,
+				B0B9883F292D575E00DB12C2 /* Color.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 				B0E1B76D29102E6F0020505C /* GameCircle.swift in Sources */,
 				B04121AF28FD570D00589414 /* MatchListCell.swift in Sources */,
 				B04121AB28FD56D600589414 /* Team.swift in Sources */,
+				B0B98840292D575E00DB12C2 /* Color.swift in Sources */,
 				B04121AD28FD56E300589414 /* Match.swift in Sources */,
 				B0078D5C28F6955B0097D4A0 /* YoloApp.swift in Sources */,
 				B0BFD0AE28F6E02C00F1C1D8 /* MatchList.swift in Sources */,
@@ -431,9 +435,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maximskorynin.yolo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -464,9 +471,12 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.maximskorynin.yolo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

@@ -9,10 +9,11 @@ import SwiftUI
 
 @main
 struct YoloApp: App {
+    
     var body: some Scene {
         WindowGroup {
             MainView()
-                .environment(\.colorScheme, .light)
         }
     }
+    
 }

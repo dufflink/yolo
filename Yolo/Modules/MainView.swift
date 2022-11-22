@@ -21,27 +21,25 @@ struct MainView: View {
     @StateObject private var gameListModel = GameListModel()
     
     var body: some View {
-        NavigationView {
-            ZStack(alignment: .top) {
-                MatchList(matchSections: matchesModel.sections, bottomInset: 48, isLoading: $matchesModel.isLoading)
-                    .headerView {
-                        GameList(games: gameListModel.games, selectedGame: $matchesModel.currentGame)
-                    }.padding(.top, 42)
-                VStack(alignment: .leading) {
-                    HStack(spacing: 8) {
-                        Image("LogoTransparent")
-                            .resizable()
-                            .frame(width: 30, height: 30)
-                            .foregroundColor(.black)
-                        
-                    }.padding(.leading, 16)
-                    
-                    Spacer()
-                    MatchStatusList(mathStatuses: matchesModel.availableMatchStatuses, selectedStatus: $matchesModel.selectedMatchStatus)
-                    .shadow(color: Color.black.opacity(0.15), radius: 12, x: 4, y: 4)
-                }
+        ZStack(alignment: .top) {
+            MatchList(matchSections: matchesModel.sections, bottomInset: 48, isLoading: $matchesModel.isLoading)
+                .headerView {
+                    GameList(games: gameListModel.games, selectedGame: $matchesModel.currentGame)
+                }.padding(.top, 42)
+            VStack(alignment: .leading) {
+                HStack(spacing: 8) {
+                    Image("LogoTransparent")
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.blackWhite)
+                }.padding(.horizontal, 16)
+                
+                Spacer()
+                MatchStatusList(mathStatuses: matchesModel.availableMatchStatuses, selectedStatus: $matchesModel.selectedMatchStatus)
+                .shadow(color: Color.black.opacity(0.15), radius: 12, x: 4, y: 4)
             }
-        }.onAppear {
+        }
+        .onAppear {
             matchesModel.getMatches()
         }
     }
