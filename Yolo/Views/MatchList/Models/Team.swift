@@ -16,7 +16,7 @@ struct Team: Codable {
     let acronym: String?
     
     static var tbd: Team {
-        return .init(id: -1, icon: "Dota2", name: "TBD", acronym: "TBD")
+        return .init(id: -1, icon: nil, name: "TBD", acronym: "TBD")
     }
     
     enum CodingKeys: String, CodingKey {

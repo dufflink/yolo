@@ -60,20 +60,31 @@ struct MatchListCell: View {
         
         var body: some View {
             HStack(spacing: 12) {
-                KFImage.url(URL(string: team.icon ?? ""))
-                    .resizable()
-                    .placeholder {
-                        Rectangle()
-                            .foregroundColor(Color.black.opacity(0.1))
-                            .frame(width: 32, height: 32)
-                    }
-                    .cacheOriginalImage()
-                    .retry(maxCount: 3, interval: .seconds(5))
-                    .fade(duration: 0.25)
-                    .cancelOnDisappear(true)
-                    .frame(width: 32, height: 32)
-                    .aspectRatio(contentMode: .fit)
-                    .cornerRadius(8)
+                if let icon = team.icon, let url = URL(string: icon) {
+                    KFImage.url(url)
+                        .resizable()
+                        .placeholder {
+                            Rectangle()
+                                .foregroundColor(Color.black.opacity(0.1))
+                                .frame(width: 32, height: 32)
+                        }
+                        .cacheOriginalImage()
+                        .retry(maxCount: 3, interval: .seconds(5))
+                        .fade(duration: 0.25)
+                        .cancelOnDisappear(true)
+                        .frame(width: 32, height: 32)
+                        .aspectRatio(contentMode: .fit)
+                        .cornerRadius(8)
+                        .task {
+                            print(url.absoluteURL)
+                        }
+                } else {
+                    Image(systemName: "shield.lefthalf.filled")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 32, height: 32)
+                        .foregroundColor(Color.black.opacity(0.2))
+                }
                 
                 if let score = score {
                     Text("\(score)")

@@ -21,6 +21,7 @@ struct GameList: View {
                         GameCircle(game: game, isSelected: game == selectedGame)
                             .pressEvents(onRelease: {
                                 if game != selectedGame {
+                                    playSimpleHaptic()
                                     selectedGame = game
                                 }
                             })
@@ -33,6 +34,11 @@ struct GameList: View {
         }
     }
     
+}
+
+func playSimpleHaptic() {
+    let generator = UINotificationFeedbackGenerator()
+    generator.notificationOccurred(.success)
 }
 
 struct GameList_Previews: PreviewProvider {

@@ -171,8 +171,8 @@ extension Match {
     
     static func getTestMatch(status: Status) -> Match {
         return .init(id: 1234, opponents: [
-            .init(team: .init(id: 1, icon: "https", name: "Natus Vincere", acronym: "NAVI")),
-            .init(team: .init(id: 2, icon: "https", name: "Virtus Pro", acronym: "VP"))
+            .init(team: .init(id: 1, icon: nil, name: "Natus Vincere", acronym: "NAVI")),
+            .init(team: .init(id: 2, icon: nil, name: "Virtus Pro", acronym: "VP"))
         ], status: status, results: [
             .init(score: 2, teamID: 1),
             .init(score: 0, teamID: 2)

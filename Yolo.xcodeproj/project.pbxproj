@@ -19,6 +19,7 @@
 		B05A0C07291D0C640086A071 /* EventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A0C06291D0C640086A071 /* EventList.swift */; };
 		B074F32C29082106003F0A84 /* API.Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = B074F32B29082106003F0A84 /* API.Game.swift */; };
 		B074F32F29085173003F0A84 /* RounderTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B074F32E29085173003F0A84 /* RounderTextModifier.swift */; };
+		B0995E9D292CD9E5003AE764 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0995E9C292CD9E5003AE764 /* Launch Screen.storyboard */; };
 		B0AE52592904A806009157CD /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = B0AE52582904A806009157CD /* Kingfisher */; };
 		B0AE525B2904AED7009157CD /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AE525A2904AED7009157CD /* API.swift */; };
 		B0AE525D2904BE54009157CD /* MatchStatusList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0AE525C2904BE54009157CD /* MatchStatusList.swift */; };
@@ -44,6 +45,7 @@
 		B05A0C06291D0C640086A071 /* EventList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventList.swift; sourceTree = "<group>"; };
 		B074F32B29082106003F0A84 /* API.Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.Game.swift; sourceTree = "<group>"; };
 		B074F32E29085173003F0A84 /* RounderTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RounderTextModifier.swift; sourceTree = "<group>"; };
+		B0995E9C292CD9E5003AE764 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
 		B0AE525A2904AED7009157CD /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		B0AE525C2904BE54009157CD /* MatchStatusList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchStatusList.swift; sourceTree = "<group>"; };
 		B0BFD0AB28F6DFA200F1C1D8 /* GameList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameList.swift; sourceTree = "<group>"; };
@@ -91,6 +93,7 @@
 				B0078D5B28F6955B0097D4A0 /* YoloApp.swift */,
 				B0078D5F28F6955C0097D4A0 /* Assets.xcassets */,
 				B0078D6128F6955C0097D4A0 /* Preview Content */,
+				B0995E9C292CD9E5003AE764 /* Launch Screen.storyboard */,
 			);
 			path = Yolo;
 			sourceTree = "<group>";
@@ -253,6 +256,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B0995E9D292CD9E5003AE764 /* Launch Screen.storyboard in Resources */,
 				B0078D6328F6955C0097D4A0 /* Preview Assets.xcassets in Resources */,
 				B0078D6028F6955C0097D4A0 /* Assets.xcassets in Resources */,
 			);
@@ -419,6 +423,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -450,6 +455,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (

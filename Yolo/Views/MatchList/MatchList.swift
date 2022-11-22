@@ -51,7 +51,9 @@ struct MatchList: View {
                             let frame = geometry.frame(in: .global)
                             
                             ZStack {
-                                Text("List is empty")
+                                Text("There aren't games".uppercased())
+                                    .font(.system(size: 18, weight: .bold))
+                                    .foregroundColor(Color.gray.opacity(0.8))
                             }.frame(width: frame.width, height: frame.height - 180)
                         } else {
                             ForEach(Array(zip(matches.indices, matches)), id: \.0) { index, match in
