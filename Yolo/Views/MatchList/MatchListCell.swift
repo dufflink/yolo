@@ -13,41 +13,57 @@ struct MatchListCell: View {
     let match: Match
     
     var body: some View {
-        HStack {
-            VStack(alignment: .leading, spacing: 0) {
-                if match.opponents.count == 1 {
-                    TeamView(team: match.opponents.first!.team)
-                    TeamView(team: .tbd)
-                } else {
-                    if match.status == .notStarted {
-                        ForEach(match.opponents) { opponent in
-                            TeamView(team: opponent.team)
-                        }
+        VStack(alignment: .leading) {
+            HStack {
+                VStack(alignment: .leading, spacing: 0) {
+                    if match.opponents.count == 1 {
+                        TeamView(team: match.opponents.first!.team)
+                        TeamView(team: .tbd)
                     } else {
-                        ForEach(match.opponents) { opponent in
-                            let score = match.score(teamID: opponent.team.id)
-                            let isWinner = match.winnderID == opponent.team.id
-                            
-                            TeamView(team: opponent.team, score: score, isWinner: isWinner)
+                        if match.status == .notStarted {
+                            ForEach(match.opponents) { opponent in
+                                TeamView(team: opponent.team)
+                            }
+                        } else {
+                            ForEach(match.opponents) { opponent in
+                                let score = match.score(teamID: opponent.team.id)
+                                let isWinner = match.winnderID == opponent.team.id
+                                
+                                TeamView(team: opponent.team, score: score, isWinner: isWinner)
+                            }
                         }
                     }
                 }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing) {
+                    Text("BO\(match.numberOfGames)")
+                        .roundedText(background: Color.orange)
+                }.padding(.vertical, 12)
             }
             
-            Spacer()
-            
-            VStack(alignment: .trailing) {
-                Text("BO\(match.numberOfGames)")
-                    .roundedText(background: Color.orange)
+            HStack {
+                Text(match.startingTime)
+                        .font(.system(size: 14, weight: .heavy))
                 
-                if match.status == .notStarted {
-                    Spacer()
-                    
-                    Text(match.startingTime)
-                        .foregroundColor(Color.black.opacity(0.4))
-                        .font(.system(size: 12, weight: .medium))
+                if match.status == .running {
+                    Circle()
+                        .foregroundColor(.red)
+                        .frame(width: 6, height: 6)
                 }
-            }.padding(.vertical, 12)
+                Spacer()
+                Text(match.league.name)
+                    .lineLimit(1)
+                    .foregroundColor(Color.gray.opacity(0.8))
+                    .font(.system(size: 14))
+                Image(systemName: "trophy.fill")
+                    .foregroundColor(Color.gray.opacity(0.6))
+                
+            }
+            .padding(.leading, 42)
+            .padding(.vertical, 4)
+            
         }
     }
     
@@ -88,7 +104,7 @@ struct MatchListCell: View {
                 
                 if let score = score {
                     Text("\(score)")
-                        .roundedText(background: isWinner ? Color.green : Color.gray)
+                        .roundedText(background: isWinner ? Color.green : Color.gray.opacity(0.6))
                 }
                 
                 Text(team.name)

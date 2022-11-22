@@ -69,6 +69,16 @@ extension Match {
     
 }
 
+extension Match {
+    
+    struct League: Codable {
+        
+        let name: String
+        
+    }
+    
+}
+
 struct Match: Identifiable, Codable {
     
     let uid: UUID = .init()
@@ -83,6 +93,7 @@ struct Match: Identifiable, Codable {
     let beginDate: Date
     
     let winnderID: Int?
+    let league: League
     
     enum CodingKeys: String, CodingKey {
 
@@ -96,12 +107,13 @@ struct Match: Identifiable, Codable {
         case beginDate = "begin_at"
         
         case winnderID = "winner_id"
+        case league
         
     }
     
     // MARK: - Life Cycle
     
-    init(id: Int, opponents: [Opponent], status: Status, results: [Result], numberOfGames: Int, beginDate: Date, winnderID: Int? = nil) {
+    init(id: Int, opponents: [Opponent], status: Status, results: [Result], numberOfGames: Int, beginDate: Date, winnderID: Int? = nil, league: League) {
         self.id = id
         self.opponents = opponents
         self.status = status
@@ -109,6 +121,7 @@ struct Match: Identifiable, Codable {
         self.numberOfGames = numberOfGames
         self.beginDate = beginDate
         self.winnderID = winnderID
+        self.league = league
     }
     
     init(from decoder: Decoder) throws {
@@ -122,6 +135,8 @@ struct Match: Identifiable, Codable {
 
         numberOfGames = try container.decode(Int.self, forKey: .numberOfGames)
         winnderID = try? container.decode(Int.self, forKey: .winnderID)
+
+        league = try container.decode(League.self, forKey: .league)
 
         if let iso8601 = try? container.decode(String.self, forKey: .beginDate) {
             beginDate = .init(iso8601: iso8601)
@@ -140,7 +155,7 @@ struct Match: Identifiable, Codable {
         let calendar = Calendar.current
 
         if calendar.isDateInToday(beginDate) {
-            return "Today, \(time)"
+            return "\(time)"
         }
 
         let dateFormatter = DateFormatter()
@@ -166,7 +181,7 @@ extension Match {
         ], status: .notStarted, results: [
             .init(score: 2, teamID: 1),
             .init(score: 0, teamID: 2)
-        ], numberOfGames: 3, beginDate: .init())
+        ], numberOfGames: 3, beginDate: .init(), league: .init(name: "Game League"))
     }
     
     static func getTestMatch(status: Status) -> Match {
@@ -176,7 +191,7 @@ extension Match {
         ], status: status, results: [
             .init(score: 2, teamID: 1),
             .init(score: 0, teamID: 2)
-        ], numberOfGames: 3, beginDate: .init())
+        ], numberOfGames: 3, beginDate: .init(), league: .init(name: "Game League"))
     }
     
 }
