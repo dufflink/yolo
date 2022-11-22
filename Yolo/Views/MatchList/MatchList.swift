@@ -27,7 +27,7 @@ extension MatchList {
 
 struct MatchList: View {
     
-    let matches: [Match]
+    let matchSections: [MatchSection]
     let bottomInset: CGFloat
     
     var headerView: AnyView? = nil
@@ -37,7 +37,7 @@ struct MatchList: View {
     var body: some View {
         GeometryReader { geometry in
             ScrollView(showsIndicators: false) {
-                VStack {
+                VStack(alignment: .leading) {
                     if let headerView = headerView {
                         headerView
                     }
@@ -47,24 +47,46 @@ struct MatchList: View {
                         ProgressView()
                             .position(x: frame.midX, y: frame.midY - 180)
                     } else {
-                        if matches.isEmpty {
+                        if matchSections.isEmpty {
                             let frame = geometry.frame(in: .global)
                             
                             ZStack {
-                                Text("There aren't games".uppercased())
-                                    .font(.system(size: 18, weight: .bold))
-                                    .foregroundColor(Color.gray.opacity(0.8))
+                                VStack {
+                                    Image("Devices")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 150)
+                                        .shadow(color: Color.black.opacity(0.12), radius: 4, x: 6, y: 4)
+                                    Text("There aren't games".uppercased())
+                                        .font(.system(size: 18, weight: .bold))
+                                        .foregroundColor(Color.gray.opacity(0.8))
+                                        .padding(.top, 36)
+                                }
+                                
                             }.frame(width: frame.width, height: frame.height - 180)
                         } else {
-                            ForEach(Array(zip(matches.indices, matches)), id: \.0) { index, match in
-                                VStack(alignment: .trailing) {
-                                    MatchListCell(match: match)
-                                    
-                                    if index != matches.count - 1 {
-                                        Rectangle()
-                                            .padding(.leading, 42)
-                                            .foregroundColor(Color.black.opacity(0.1))
-                                            .frame(height: 0.5)
+                            ForEach(matchSections) { section in
+                                HStack(alignment: .bottom) {
+                                    /*@START_MENU_TOKEN@*/Text(section.name)/*@END_MENU_TOKEN@*/
+                                        .font(.system(size: 16, weight: .bold))
+                                        .foregroundColor(Color.blue.opacity(0.8))
+                                        .padding(.top, 16)
+                                    Rectangle()
+                                        .frame(height: 0.5)
+                                        .foregroundColor(Color.blue.opacity(0.4))
+                                        .padding(.bottom, 8)
+                                }
+                                
+                                ForEach(section.matches) { match in
+                                    VStack(alignment: .trailing) {
+                                        MatchListCell(match: match)
+                                        
+                                        if match.id != section.matches.last?.id {
+                                            Rectangle()
+                                                .padding(.leading, 42)
+                                                .foregroundColor(Color.black.opacity(0.1))
+                                                .frame(height: 0.5)
+                                        }
                                     }
                                 }
                             }.padding(.horizontal, 16)
@@ -80,16 +102,15 @@ struct MatchList: View {
 
 struct MatchList_Previews: PreviewProvider {
     static var previews: some View {
-        MatchList(matches: [
-            Match.testMatch,
-            Match.testMatch,
-            Match.testMatch,
-            Match.testMatch,
-            Match.testMatch,
-            Match.testMatch,
-            Match.testMatch,
-            Match.testMatch,
-            Match.testMatch
+        MatchList(matchSections: [
+            MatchSection(date: .init(), matches: [
+                Match.testMatch,
+                Match.testMatch,
+                Match.testMatch,
+                Match.testMatch,
+                Match.testMatch,
+                Match.testMatch
+            ], name: "24 November")
         ], bottomInset: 0, isLoading: .constant(false))
         .headerView {
             GameList(games: [

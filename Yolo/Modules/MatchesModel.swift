@@ -8,6 +8,17 @@
 import Combine
 import Foundation
 
+struct MatchSection: Identifiable {
+    
+    let id: UUID = .init()
+    
+    let date: Date
+    let matches: [Match]
+    
+    let name: String
+    
+}
+
 final class MatchesModel: ObservableObject {
     
     private var matchesRequest: AnyCancellable?
@@ -23,8 +34,8 @@ final class MatchesModel: ObservableObject {
     @Published var currentGame: API.Game = .dota2
     @Published var selectedMatchStatus: Match.Status = .notStarted
     
-    @Published var matches: [Match] = []
     @Published var isLoading = false
+    @Published var sections: [MatchSection] = []
     
     init() {
         Publishers.CombineLatest($selectedMatchStatus, $currentGame)
@@ -41,19 +52,26 @@ final class MatchesModel: ObservableObject {
         isLoading = true
         
         matchesRequest = createMatchesPublisher(game: game, status: status)
-            .receive(on: DispatchQueue.main)
+            .receive(on: DispatchQueue.global(qos: .userInitiated))
             .sink(receiveCompletion: { [weak self] completion in
-                self?.isLoading = false
+                DispatchQueue.main.async {
+                    self?.isLoading = false
+                }
             }, receiveValue: { [weak self] matches in
                 self?.lastLoadedGame = game
                 self?.lastLoadedStatus = status
                 
-                guard !matches.isEmpty else {
-                    self?.matches = []
-                    return
-                }
+                let calendar = Calendar.current
+                let dict = Dictionary(grouping: matches, by: { calendar.startOfDay(for: $0.beginDate) })
                 
-                self?.matches = matches
+                let sections = dict.map { date, matches in
+                    let name = self?.getSectionName(from: date) ?? ""
+                    return MatchSection(date: date, matches: matches, name: name)
+                }.sorted(by: status == .finished ? { $0.date > $1.date } : { $0.date < $1.date })
+                
+                DispatchQueue.main.async {
+                    self?.sections = sections
+                }
             })
     }
     
@@ -70,6 +88,20 @@ final class MatchesModel: ObservableObject {
         
         let request = API.Request(game: game, status: status, schedule: schedule)
         return API.createMatchPublisher(request: request).eraseToAnyPublisher()
+    }
+    
+    private func getSectionName(from date: Date) -> String {
+        let calendar = Calendar.current
+
+        if calendar.isDateInToday(date) {
+            return "Today"
+        }
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd MMMM"
+        dateFormatter.locale = Locale(identifier: "en_US")
+
+        return dateFormatter.string(from: date)
     }
     
 }

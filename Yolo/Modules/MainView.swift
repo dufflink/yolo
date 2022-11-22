@@ -23,7 +23,7 @@ struct MainView: View {
     var body: some View {
         NavigationView {
             ZStack(alignment: .top) {
-                MatchList(matches: matchesModel.matches, bottomInset: 48, isLoading: $matchesModel.isLoading)
+                MatchList(matchSections: matchesModel.sections, bottomInset: 48, isLoading: $matchesModel.isLoading)
                     .headerView {
                         GameList(games: gameListModel.games, selectedGame: $matchesModel.currentGame)
                     }.padding(.top, 42)

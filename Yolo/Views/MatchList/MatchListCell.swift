@@ -13,7 +13,7 @@ struct MatchListCell: View {
     let match: Match
     
     var body: some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: 0) {
             HStack {
                 VStack(alignment: .leading, spacing: 0) {
                     if match.opponents.count == 1 {
@@ -44,7 +44,7 @@ struct MatchListCell: View {
             }
             
             HStack {
-                Text(match.startingTime)
+                Text(match.time)
                         .font(.system(size: 14, weight: .heavy))
                 
                 if match.status == .running {
@@ -91,9 +91,6 @@ struct MatchListCell: View {
                         .frame(width: 32, height: 32)
                         .aspectRatio(contentMode: .fit)
                         .cornerRadius(8)
-                        .task {
-                            print(url.absoluteURL)
-                        }
                 } else {
                     Image(systemName: "shield.lefthalf.filled")
                         .resizable()
