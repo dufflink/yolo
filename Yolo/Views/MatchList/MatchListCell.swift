@@ -92,7 +92,6 @@ struct MatchListCell: View {
                         .cancelOnDisappear(true)
                         .frame(width: 32, height: 32)
                         .aspectRatio(contentMode: .fit)
-                        .cornerRadius(8)
                 } else {
                     Image(systemName: "shield.lefthalf.filled")
                         .resizable()
