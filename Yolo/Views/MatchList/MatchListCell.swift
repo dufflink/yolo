@@ -85,6 +85,7 @@ struct MatchListCell: View {
                             Rectangle()
                                 .foregroundColor(Color.blackWhite.opacity(0.1))
                                 .frame(width: 32, height: 32)
+                                .cornerRadius(6)
                         }
                         .cacheOriginalImage()
                         .retry(maxCount: 3, interval: .seconds(5))
