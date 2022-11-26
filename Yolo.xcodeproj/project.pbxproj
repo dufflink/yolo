@@ -16,7 +16,7 @@
 		B04121AB28FD56D600589414 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04121AA28FD56D600589414 /* Team.swift */; };
 		B04121AD28FD56E300589414 /* Match.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04121AC28FD56E300589414 /* Match.swift */; };
 		B04121AF28FD570D00589414 /* MatchListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B04121AE28FD570D00589414 /* MatchListCell.swift */; };
-		B05A0C07291D0C640086A071 /* EventList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A0C06291D0C640086A071 /* EventList.swift */; };
+		B05A0C07291D0C640086A071 /* LeagueList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B05A0C06291D0C640086A071 /* LeagueList.swift */; };
 		B074F32C29082106003F0A84 /* API.Game.swift in Sources */ = {isa = PBXBuildFile; fileRef = B074F32B29082106003F0A84 /* API.Game.swift */; };
 		B074F32F29085173003F0A84 /* RounderTextModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = B074F32E29085173003F0A84 /* RounderTextModifier.swift */; };
 		B0995E9D292CD9E5003AE764 /* Launch Screen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B0995E9C292CD9E5003AE764 /* Launch Screen.storyboard */; };
@@ -29,7 +29,7 @@
 		B0E1B76A29102AF30020505C /* ButtonPress.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E1B76929102AF30020505C /* ButtonPress.swift */; };
 		B0E1B76D29102E6F0020505C /* GameCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E1B76C29102E6E0020505C /* GameCircle.swift */; };
 		B0E849E62900276200BDFB56 /* Date.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E849E52900276200BDFB56 /* Date.swift */; };
-		B0E849EA29002C4600BDFB56 /* MatchesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E849E929002C4600BDFB56 /* MatchesModel.swift */; };
+		B0E849EA29002C4600BDFB56 /* MainModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0E849E929002C4600BDFB56 /* MainModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -43,7 +43,7 @@
 		B04121AA28FD56D600589414 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		B04121AC28FD56E300589414 /* Match.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Match.swift; sourceTree = "<group>"; };
 		B04121AE28FD570D00589414 /* MatchListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchListCell.swift; sourceTree = "<group>"; };
-		B05A0C06291D0C640086A071 /* EventList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventList.swift; sourceTree = "<group>"; };
+		B05A0C06291D0C640086A071 /* LeagueList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeagueList.swift; sourceTree = "<group>"; };
 		B074F32B29082106003F0A84 /* API.Game.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.Game.swift; sourceTree = "<group>"; };
 		B074F32E29085173003F0A84 /* RounderTextModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RounderTextModifier.swift; sourceTree = "<group>"; };
 		B0995E9C292CD9E5003AE764 /* Launch Screen.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = "Launch Screen.storyboard"; sourceTree = "<group>"; };
@@ -55,7 +55,7 @@
 		B0E1B76929102AF30020505C /* ButtonPress.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonPress.swift; sourceTree = "<group>"; };
 		B0E1B76C29102E6E0020505C /* GameCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameCircle.swift; sourceTree = "<group>"; };
 		B0E849E52900276200BDFB56 /* Date.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Date.swift; sourceTree = "<group>"; };
-		B0E849E929002C4600BDFB56 /* MatchesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchesModel.swift; sourceTree = "<group>"; };
+		B0E849E929002C4600BDFB56 /* MainModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -128,12 +128,12 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
-		B05A0C05291D0C570086A071 /* EventList */ = {
+		B05A0C05291D0C570086A071 /* LeagueList */ = {
 			isa = PBXGroup;
 			children = (
-				B05A0C06291D0C640086A071 /* EventList.swift */,
+				B05A0C06291D0C640086A071 /* LeagueList.swift */,
 			);
-			path = EventList;
+			path = LeagueList;
 			sourceTree = "<group>";
 		};
 		B074F32D29085163003F0A84 /* Modifiers */ = {
@@ -178,7 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				B0078D5D28F6955B0097D4A0 /* MainView.swift */,
-				B0E849E929002C4600BDFB56 /* MatchesModel.swift */,
+				B0E849E929002C4600BDFB56 /* MainModel.swift */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -186,7 +186,7 @@
 		B0E849E829002C2C00BDFB56 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				B05A0C05291D0C570086A071 /* EventList */,
+				B05A0C05291D0C570086A071 /* LeagueList */,
 				B08311F22919381000F96459 /* MatchStatusList */,
 				B0E1B76B29102E360020505C /* GameList */,
 				B04121A428FD569300589414 /* MatchList */,
@@ -278,7 +278,7 @@
 				B074F32C29082106003F0A84 /* API.Game.swift in Sources */,
 				B074F32F29085173003F0A84 /* RounderTextModifier.swift in Sources */,
 				B0E1B76A29102AF30020505C /* ButtonPress.swift in Sources */,
-				B05A0C07291D0C640086A071 /* EventList.swift in Sources */,
+				B05A0C07291D0C640086A071 /* LeagueList.swift in Sources */,
 				B0BFD0AC28F6DFA200F1C1D8 /* GameList.swift in Sources */,
 				B0E1B76D29102E6F0020505C /* GameCircle.swift in Sources */,
 				B04121AF28FD570D00589414 /* MatchListCell.swift in Sources */,
@@ -289,7 +289,7 @@
 				B0BFD0AE28F6E02C00F1C1D8 /* MatchList.swift in Sources */,
 				B04121A928FD56BA00589414 /* MatchFormat.swift in Sources */,
 				B0AE525B2904AED7009157CD /* API.swift in Sources */,
-				B0E849EA29002C4600BDFB56 /* MatchesModel.swift in Sources */,
+				B0E849EA29002C4600BDFB56 /* MainModel.swift in Sources */,
 				B03C20E029058AB400DFDB92 /* TrackableScrollView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

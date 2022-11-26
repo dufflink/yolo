@@ -7,24 +7,17 @@
 
 import SwiftUI
 
-final class GameListModel: ObservableObject {
-    
-    let games: [API.Game] = [
-        .dota2, .csgo, .valorant
-    ]
-    
-}
-
 struct MainView: View {
     
-    @StateObject private var matchesModel = MatchesModel()
-    @StateObject private var gameListModel = GameListModel()
+    @StateObject private var model = MainModel()
+    
+    @State private var showSheet = false
     
     var body: some View {
         ZStack(alignment: .top) {
-            MatchList(matchSections: matchesModel.sections, bottomInset: 48, isLoading: $matchesModel.isLoading)
+            MatchList(matchSections: model.filteredSections, bottomInset: 48, isLoading: $model.isLoading)
                 .headerView {
-                    GameList(games: gameListModel.games, selectedGame: $matchesModel.currentGame)
+                    GameList(games: model.availableGames, selectedGame: $model.currentGame)
                 }.padding(.top, 42)
             VStack(alignment: .leading) {
                 HStack(spacing: 8) {
@@ -35,12 +28,35 @@ struct MainView: View {
                 }.padding(.horizontal, 16)
                 
                 Spacer()
-                MatchStatusList(mathStatuses: matchesModel.availableMatchStatuses, selectedStatus: $matchesModel.selectedMatchStatus)
+                MatchStatusList(mathStatuses: model.availableMatchStatuses, leagues: model.leagues, selectedStatus: $model.currentStatus, tapOnTrophy: {
+                    setSheetState(isHidden: false)
+                })
                 .shadow(color: Color.black.opacity(0.15), radius: 12, x: 4, y: 4)
+                .offset(y: showSheet ? -40 : .zero)
+            }
+            
+            if model.leagues.count > 1 {
+                GeometryReader { geometry in
+                    VStack {
+                        Spacer()
+                        LeagueList(leagues: $model.leagues, isLoading: model.isLoading, didPressCloseButton: {
+                            withAnimation {
+                                setSheetState(isHidden: true)
+                            }
+                        })
+                        .offset(y: showSheet ? -24 : geometry.size.height)
+                    }
+                }
             }
         }
         .onAppear {
-            matchesModel.getMatches()
+            model.getMatches()
+        }
+    }
+    
+    func setSheetState(isHidden: Bool) {
+        withAnimation(isHidden ? .easeOut : .easeInOut) {
+            showSheet = !isHidden
         }
     }
     

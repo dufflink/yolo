@@ -61,7 +61,8 @@ final class API {
     static func createMatchPublisher(request: Request) -> AnyPublisher<[Match], Error> {
         print(request.url)
         return URLSession.shared.dataTaskPublisher(for: request.url)
-            .receive(on: DispatchQueue.global(qos: .background))
+            .retry(1)
+            .subscribe(on: DispatchQueue.global(qos: .utility))
             .map(\.data)
             .decode(type: [Match].self, decoder: JSONDecoder())
             .compactMap({

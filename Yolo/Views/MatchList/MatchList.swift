@@ -72,7 +72,7 @@ struct MatchList: View {
                                         .foregroundColor(Color.blue.opacity(0.8))
                                         .padding(.top, 16)
                                     Rectangle()
-                                        .frame(height: 0.5)
+                                        .frame(height: 1)
                                         .foregroundColor(Color.blue.opacity(0.4))
                                         .padding(.bottom, 8)
                                 }
@@ -85,7 +85,7 @@ struct MatchList: View {
                                             Rectangle()
                                                 .padding(.leading, 42)
                                                 .foregroundColor(Color.blackWhite.opacity(0.1))
-                                                .frame(height: 0.5)
+                                                .frame(height: 1)
                                         }
                                     }
                                 }

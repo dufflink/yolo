@@ -71,8 +71,9 @@ extension Match {
 
 extension Match {
     
-    struct League: Codable {
+    struct League: Codable, Hashable {
         
+        let id: Int
         let name: String
         
     }
@@ -104,7 +105,7 @@ struct Match: Identifiable, Codable {
         case results
         
         case numberOfGames = "number_of_games"
-        case beginDate = "begin_at"
+        case beginDate = "scheduled_at"
         
         case winnderID = "winner_id"
         case league
@@ -181,7 +182,7 @@ extension Match {
         ], status: .notStarted, results: [
             .init(score: 2, teamID: 1),
             .init(score: 0, teamID: 2)
-        ], numberOfGames: 3, beginDate: .init(), league: .init(name: "Game League"))
+        ], numberOfGames: 3, beginDate: .init(), league: .init(id: 12, name: "Game League"))
     }
     
     static func getTestMatch(status: Status) -> Match {
@@ -191,7 +192,7 @@ extension Match {
         ], status: status, results: [
             .init(score: 2, teamID: 1),
             .init(score: 0, teamID: 2)
-        ], numberOfGames: 3, beginDate: .init(), league: .init(name: "Game League"))
+        ], numberOfGames: 3, beginDate: .init(), league: .init(id: 34, name: "Game League"))
     }
     
 }
