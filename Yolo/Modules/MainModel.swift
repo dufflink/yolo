@@ -11,11 +11,10 @@ import Foundation
 struct MatchSection: Identifiable {
     
     let id: UUID = .init()
+    let name: String
     
     let date: Date
-    let matches: [Match]
-    
-    let name: String
+    let matches: [Match]    
     
 }
 
