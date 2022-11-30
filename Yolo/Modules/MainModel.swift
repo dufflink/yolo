@@ -10,6 +10,8 @@ import Foundation
 
 struct MatchSection: Identifiable {
     
+    // MARK: - Properties
+    
     let id: UUID = .init()
     
     let date: Date
