@@ -9,9 +9,9 @@ import SwiftUI
 
 struct GameList: View {
     
-    let games: [API.Game]
+    let games: [Game]
     
-    @Binding var selectedGame: API.Game
+    @Binding var selectedGame: Game
     
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {

@@ -17,29 +17,30 @@ struct MatchSection: Identifiable {
     let matches: [Match]    
     
 }
- 
+
 final class MainModel: ObservableObject {
     
-    private var matchesRequest: AnyCancellable?
     private var cancellabels: [AnyCancellable] = []
     
     let availableMatchStatuses: [Match.Status] = [
         .running, .notStarted, .finished
     ]
     
-    let availableGames: [API.Game] = [
+    let availableGames: [Game] = [
         .dota2, .csgo, .valorant
     ]
     
+    private let api = API()
     private let queue = DispatchQueue.global(qos: .utility)
     
-    private var lastLoadedGame: API.Game = .dota2
+    private var lastLoadedGame: Game = .dota2
     private var lastLoadedStatus: Match.Status = .notStarted
     
-    private var savedSelectedLeagues: [API.Game: [Match.Status: [Int]]] = [:]
-    private var matches: [Match] = []
+    private var savedSelectedLeagues: [Game: [Match.Status: [Int]]] = [:]
     
-    @Published var currentGame: API.Game = .dota2
+    @Published private var matches: [Match] = []
+    
+    @Published var currentGame: Game = .dota2
     @Published var currentStatus: Match.Status = .notStarted
     
     @Published var isLoading = true
@@ -59,11 +60,36 @@ final class MainModel: ObservableObject {
         Publishers.CombineLatest($currentStatus, $currentGame)
             .dropFirst(1)
             .receive(on: DispatchQueue.main)
-            .sink { [weak self] selectedMatchStatus, game in
-                if selectedMatchStatus != self?.lastLoadedStatus || game != self?.lastLoadedGame {
-                    self?.getMatches(game: game, status: selectedMatchStatus)
+            .sink { [self] selectedMatchStatus, game in
+                if selectedMatchStatus != lastLoadedStatus || game != lastLoadedGame {
+                    Task {
+                        await getMatches(game: game, status: selectedMatchStatus)
+                    }
                 }
         }.store(in: &cancellabels)
+        
+        $matches
+            .dropFirst(1)
+            .receive(on: queue)
+            .sink { matches in
+                var leagues: [LeagueListModel] = []
+                
+                let leaguesSet = Set(matches.map { $0.league })
+                let sortedLeagues = Array(leaguesSet).map { LeagueListModel(league: $0) }.sorted(by: { $0.name < $1.name })
+                
+                if let savedSalectedLeagues = self.savedSelectedLeagues[self.lastLoadedGame]?[self.currentStatus] {
+                    leagues = sortedLeagues.map {
+                        var league = $0
+                        league.setSelected(savedSalectedLeagues.contains($0.uid))
+                        return league
+                    }
+                }
+                
+                DispatchQueue.main.async {
+                    self.leagues = leagues
+                }
+                
+            }.store(in: &cancellabels)
         
         $leagues
             .dropFirst(1)
@@ -105,36 +131,24 @@ final class MainModel: ObservableObject {
         }.store(in: &cancellabels)
     }
     
-    func getMatches(game: API.Game = .dota2, status: Match.Status = .notStarted) {
-        matchesRequest?.cancel()
+    func getMatches(game: Game = .dota2, status: Match.Status = .notStarted) async {
         isLoading = true
         
-        matchesRequest = createMatchesPublisher(game: game, status: status)
-            .receive(on: queue)
-            .sink(receiveCompletion: { completion in
-                print(completion)
-            }, receiveValue: { matches in
-                self.lastLoadedGame = game
-                self.lastLoadedStatus = status
-                
-                self.matches = matches
-                var leagues: [LeagueListModel] = []
-                
-                let leaguesSet = Set(matches.map { $0.league })
-                let sortedLeagues = Array(leaguesSet).map { LeagueListModel(league: $0) }.sorted(by: { $0.name < $1.name })
-                
-                if let savedSalectedLeagues = self.savedSelectedLeagues[game]?[status] {
-                    leagues = sortedLeagues.map {
-                        var league = $0
-                        league.setSelected(savedSalectedLeagues.contains($0.uid))
-                        return league
-                    }
-                }
-                
-                DispatchQueue.main.async {
-                    self.leagues = leagues
-                }
-            })
+        var schedule: API.Endpoint.Schedule = .ascending
+            
+        if status == .canceled || status == .finished {
+            schedule = .descending
+        }
+        
+        do {
+            lastLoadedGame = game
+            lastLoadedStatus = status
+            
+            matches = try await api.getMatches(game: game, status: status, schedule: schedule)
+        } catch {
+            isLoading = false
+            print(error.localizedDescription)
+        }
     }
     
     private func makeSections(for matches: [Match], status: Match.Status) -> [MatchSection] {
@@ -143,23 +157,8 @@ final class MainModel: ObservableObject {
         
         return dict.map { date, matches in
             let name = getSectionName(from: date)
-            return MatchSection(date: date, matches: matches, name: name)
+            return MatchSection(name: name, date: date, matches: matches)
         }.sorted(by: status == .finished ? { $0.date > $1.date } : { $0.date < $1.date })
-    }
-    
-    private func createMatchesPublisher(game: API.Game, status: Match.Status? = nil) -> AnyPublisher<[Match], Error> {
-        var schedule: API.Request.Schedule?
-        
-        if let status = status {
-            schedule = API.Request.Schedule.ascending
-            
-            if status == .canceled || status == .finished {
-                schedule = .descending
-            }
-        }
-        
-        let request = API.Request(game: game, status: status, schedule: schedule)
-        return API.createMatchPublisher(request: request).eraseToAnyPublisher()
     }
     
     private func getSectionName(from date: Date) -> String {

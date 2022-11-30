@@ -9,7 +9,7 @@ import SwiftUI
 
 struct GameCircle: View {
     
-    let game: API.Game
+    let game: Game
     let isSelected: Bool
     
     @State private var isPressed = false

@@ -103,14 +103,14 @@ struct MatchList: View {
 struct MatchList_Previews: PreviewProvider {
     static var previews: some View {
         MatchList(matchSections: [
-            MatchSection(date: .init(), matches: [
+            MatchSection(name: "24 November", date: .init(), matches: [
                 Match.testMatch,
                 Match.testMatch,
                 Match.testMatch,
                 Match.testMatch,
                 Match.testMatch,
                 Match.testMatch
-            ], name: "24 November")
+            ])
         ], bottomInset: 0, isLoading: .constant(false))
         .headerView {
             GameList(games: [

@@ -50,7 +50,9 @@ struct MainView: View {
             }
         }
         .onAppear {
-            model.getMatches()
+            Task {
+                await model.getMatches()
+            }
         }
     }
     
