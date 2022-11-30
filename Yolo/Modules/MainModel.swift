@@ -38,7 +38,7 @@ final class MainModel: ObservableObject {
     
     private var savedSelectedLeagues: [Game: [Match.Status: [Int]]] = [:]
     
-    @Published private var matches: [Match] = []
+    private var matches: [Match] = []
     
     @Published var currentGame: Game = .dota2
     @Published var currentStatus: Match.Status = .notStarted
@@ -68,69 +68,20 @@ final class MainModel: ObservableObject {
                 }
         }.store(in: &cancellabels)
         
-        $matches
-            .dropFirst(1)
-            .receive(on: queue)
-            .sink { matches in
-                var leagues: [LeagueListModel] = []
-                
-                let leaguesSet = Set(matches.map { $0.league })
-                let sortedLeagues = Array(leaguesSet).map { LeagueListModel(league: $0) }.sorted(by: { $0.name < $1.name })
-                
-                if let savedSalectedLeagues = self.savedSelectedLeagues[self.lastLoadedGame]?[self.currentStatus] {
-                    leagues = sortedLeagues.map {
-                        var league = $0
-                        league.setSelected(savedSalectedLeagues.contains($0.uid))
-                        return league
-                    }
-                }
-                
-                DispatchQueue.main.async {
-                    self.leagues = leagues
-                }
-                
-            }.store(in: &cancellabels)
-        
         $leagues
             .dropFirst(1)
             .receive(on: queue)
             .sink { leagues in
-                defer {
-                    DispatchQueue.main.async {
-                        self.isLoading = false
-                    }
-                }
-                
-                guard !leagues.isEmpty else {
-                    DispatchQueue.main.async {
-                        self.filteredSections = []
-                    }
-                    return
-                }
-                
-                let selected = leagues.filter { $0.selected }.map { $0.uid }
-                
-                guard !selected.isEmpty else {
-                    let sections = self.makeSections(for: self.matches, status: self.currentStatus)
-                    
-                    DispatchQueue.main.async {
-                        self.filteredSections = sections
-                    }
-                    
-                    return
-                }
-                
-                self.savedSelectedLeagues[self.currentGame]?[self.currentStatus] = selected
-                
-                let filteredMatches = self.matches.filter { selected.contains($0.league.id) }
-                let sections = self.makeSections(for: filteredMatches, status: self.currentStatus)
+                let filteredSections = self.prepareSections(for: self.matches, leagues: leagues)
                 
                 DispatchQueue.main.async {
-                    self.filteredSections = sections
+                    self.filteredSections = filteredSections
+                    self.isLoading = false
                 }
         }.store(in: &cancellabels)
     }
     
+    @MainActor
     func getMatches(game: Game = .dota2, status: Match.Status = .notStarted) async {
         isLoading = true
         
@@ -145,10 +96,42 @@ final class MainModel: ObservableObject {
             lastLoadedStatus = status
             
             matches = try await api.getMatches(game: game, status: status, schedule: schedule)
+            leagues = try await prepareLeagues(matches, savedLeagues: savedSelectedLeagues)
         } catch {
-            isLoading = false
             print(error.localizedDescription)
         }
+    }
+    
+    private func prepareLeagues(_ matches: [Match], savedLeagues: [Game: [Match.Status: [Int]]]) async throws -> [LeagueListModel] {
+        var leagues: [LeagueListModel] = []
+        
+        let leaguesSet = Set(matches.map { $0.league })
+        let sortedLeagues = Array(leaguesSet).map { LeagueListModel(league: $0) }.sorted(by: { $0.name < $1.name })
+        
+        if let savedSalectedLeagues = self.savedSelectedLeagues[self.lastLoadedGame]?[self.currentStatus] {
+            leagues = sortedLeagues.map {
+                var league = $0
+                league.setSelected(savedSalectedLeagues.contains($0.uid))
+                return league
+            }
+        }
+        
+        return leagues
+    }
+    
+    private func prepareSections(for matches: [Match], leagues: [LeagueListModel]) -> [MatchSection] {
+        let selected = leagues.filter { $0.selected }.map { $0.uid }
+        
+        guard !selected.isEmpty else {
+            return self.makeSections(for: self.matches, status: self.currentStatus)
+        }
+        
+        self.savedSelectedLeagues[self.currentGame]?[self.currentStatus] = selected
+        
+        let filteredMatches = self.matches.filter { selected.contains($0.league.id) }
+        let sections = self.makeSections(for: filteredMatches, status: self.currentStatus)
+        
+        return sections
     }
     
     private func makeSections(for matches: [Match], status: Match.Status) -> [MatchSection] {

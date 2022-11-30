@@ -73,9 +73,8 @@ extension API {
         
         let session = URLSession.shared
         //TODO: Logger
-        
         let (data, _) = try await session.data(for: urlRequest)
-        
+
         let decoder = JSONDecoder()
         return try decoder.decode(T.self, from: data)
     }
