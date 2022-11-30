@@ -17,7 +17,7 @@ struct MatchSection: Identifiable {
     let matches: [Match]    
     
 }
-
+ 
 final class MainModel: ObservableObject {
     
     private var matchesRequest: AnyCancellable?
