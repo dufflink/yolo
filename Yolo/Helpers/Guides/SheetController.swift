@@ -74,7 +74,7 @@ public struct SheetController<Content: View>: UIViewControllerRepresentable {
             if let sheet = hostingController.sheetPresentationController {
                 sheet.delegate = context.coordinator
                 sheet.detents = detents
-                sheet.preferredCornerRadius = 12
+                sheet.preferredCornerRadius = 20
                 sheet.prefersGrabberVisible = true
             }
 

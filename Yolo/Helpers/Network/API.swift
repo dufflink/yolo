@@ -62,7 +62,9 @@ extension API {
     
     func getMatches(game: Game, status: Match.Status, schedule: API.Endpoint.Schedule) async throws -> [Match] {
         let endpoint: Endpoint = .matches(game: game, status: status, schedule: schedule)
-        return try await fetch(endpoint) ?? []
+        let matches: [Match] = try await fetch(endpoint) ?? []
+            
+        return matches.filter { !$0.opponents.isEmpty }
     }
     
     func fetch<T: Decodable>(_ endpoint: Endpoint) async throws -> T? {

@@ -17,16 +17,14 @@ struct GameList: View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
                 ForEach(games) { game in
-                    ZStack {
-                        GameCircle(game: game, isSelected: game == selectedGame)
-                            .onTapGesture {
-                                if game != selectedGame {
-                                    playSimpleHaptic()
-                                    selectedGame = game
-                                }
+                    GameCircle(game: game, isSelected: game == selectedGame)
+                        .onTapGesture {
+                            if game != selectedGame {
+                                playSimpleHaptic()
+                                selectedGame = game
                             }
-                    }
-                    
+                        }
+                
                 }
             }
             .padding(.horizontal, 12)

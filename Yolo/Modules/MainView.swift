@@ -31,7 +31,7 @@ struct MainView: View {
                 showSheet = false
             }
         }
-        .onAppear {
+        .task {
             Task {
                 await model.getMatches()
             }

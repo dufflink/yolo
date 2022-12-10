@@ -91,16 +91,38 @@ final class MainModel: ObservableObject {
             schedule = .descending
         }
         
+        lastLoadedGame = game
+        lastLoadedStatus = status
+        
+        fetchTask?.cancel()
+        
+        fetchTask = Task { () -> [Match] in
+            do {
+                let matches = try await api.getMatches(game: game, status: status, schedule: schedule)
+                if Task.isCancelled { return [] }
+                
+                return matches
+            } catch {
+                print(error.localizedDescription)
+                return []
+            }
+        }
+        
+        matches = await fetchTask?.value ?? []
+        
+        guard !matches.isEmpty else {
+            return
+        }
+        
         do {
-            lastLoadedGame = game
-            lastLoadedStatus = status
-            
-            matches = try await api.getMatches(game: game, status: status, schedule: schedule)
             leagues = try await prepareLeagues(matches, savedLeagues: savedSelectedLeagues)
         } catch {
             print(error.localizedDescription)
         }
+        
     }
+    
+    private var fetchTask: Task<[Match], Never>?
     
     private func prepareLeagues(_ matches: [Match], savedLeagues: [Game: [Match.Status: [Int]]]) async throws -> [LeagueListModel] {
         var leagues: [LeagueListModel] = []
