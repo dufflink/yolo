@@ -15,38 +15,20 @@ struct MainView: View {
     
     var body: some View {
         ZStack(alignment: .top) {
-            MatchList(matchSections: model.filteredSections, bottomInset: 48, isLoading: $model.isLoading)
-                .headerView {
-                    GameList(games: model.availableGames, selectedGame: $model.currentGame)
-                }.padding(.top, 42)
-            VStack(alignment: .leading) {
-                HStack(spacing: 8) {
-                    Image("LogoTransparent")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.blackWhite)
-                }.padding(.horizontal, 16)
-                
-                Spacer()
-                MatchStatusList(mathStatuses: model.availableMatchStatuses, leagues: model.leagues, selectedStatus: $model.currentStatus, tapOnTrophy: {
-                    setSheetState(isHidden: false)
-                })
-                .shadow(color: Color.black.opacity(0.15), radius: 12, x: 4, y: 4)
-                .offset(y: showSheet ? -40 : .zero)
-            }
+            matchList
+                .padding(.top, 42)
             
-            if model.leagues.count > 1 {
-                GeometryReader { geometry in
-                    VStack {
-                        Spacer()
-                        LeagueList(leagues: $model.leagues, isLoading: model.isLoading, didPressCloseButton: {
-                            withAnimation {
-                                setSheetState(isHidden: true)
-                            }
-                        })
-                        .offset(y: showSheet ? -24 : geometry.size.height)
-                    }
-                }
+            VStack(alignment: .leading) {
+                header
+                Spacer()
+                
+                matchStatusList
+                    .shadow(color: Color.black.opacity(0.15), radius: 12, x: 4, y: 4)
+            }
+        }
+        .sheet(isPresented: $showSheet, detents: sheetDetents) {
+            LeagueList(leagues: $model.leagues) {
+                showSheet = false
             }
         }
         .onAppear {
@@ -56,9 +38,43 @@ struct MainView: View {
         }
     }
     
-    func setSheetState(isHidden: Bool) {
-        withAnimation(isHidden ? .easeOut : .easeInOut) {
-            showSheet = !isHidden
+    private var matchList: some View {
+        MatchList(matchSections: model.filteredSections, bottomInset: 48, isLoading: $model.isLoading)
+            .headerView {
+                GameList(games: model.availableGames, selectedGame: $model.currentGame)
+            }
+    }
+    
+    private var header: some View {
+        HStack(spacing: 8) {
+            Image("yolo-logo")
+                .resizable()
+                .frame(width: 30, height: 30)
+                .foregroundColor(.blackWhite)
+        }.padding(.horizontal, 16)
+    }
+    
+    private var matchStatusList: some View {
+        MatchStatusList(mathStatuses: model.availableMatchStatuses, leagues: model.leagues, selectedStatus: $model.currentStatus, tapOnTrophy: {
+            showSheet = true
+        })
+    }
+    
+    private var sheetDetents: [UISheetPresentationController.Detent] {
+        if #available(iOS 16.0, *) {
+            var detents: [UISheetPresentationController.Detent] = [.medium()]
+            
+            if model.leagues.count < 6 {
+                detents += [
+                    .custom(identifier: .init("small")) { _ in
+                        return CGFloat(model.leagues.count) * 50 + 32
+                    }
+                ]
+            }
+            
+            return detents
+        } else {
+            return [.medium()]
         }
     }
     

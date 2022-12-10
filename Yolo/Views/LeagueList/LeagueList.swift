@@ -72,58 +72,48 @@ struct LeagueList: View {
     
     @Binding var leagues: [LeagueListModel]
     
-    var isLoading = true
     var didPressCloseButton: (() -> Void)?
     
     var body: some View {
         ZStack {
             VStack(alignment: .trailing) {
-                HStack(spacing: 16) {
-                    Text("Leagues")
-                        .fontWeight(.bold)
-                        .foregroundColor(Color.purple)
-                    
-                    Spacer()
-                    
-                    Button(action: {
-                        didPressCloseButton?()
-                    }, label: {
-                        Image(systemName: "xmark.circle.fill")
-                            .resizable()
-                            .frame(width: 34, height: 34)
-                            .foregroundColor(Color.gray.opacity(0.5))
-                    })
-                }
-                .padding(.leading, 34)
-                .padding(.trailing, 28)
+                Spacer().frame(height: 16)
                 
-                ScrollView(showsIndicators: false) {
-                    VStack {
-                        ForEach($leagues) { league in
-                            LeagueListCell(league: league)
-                        }
-                    }
-                }
-                .padding(.horizontal, 32)
-                .frame(maxHeight: leagues.count > 6 ? 300 : CGFloat(leagues.count) * 50)
+                header
+                    .padding(.leading, 18)
+                    .padding(.trailing, 12)
+                
+                listView
+                    .padding(.horizontal, 16)
             }
-            .background(
-                RoundedRectangle(cornerRadius: 12)
-                    .foregroundColor(Color.whiteBlack)
-                    .padding(.horizontal, 16)
-                    .padding(.vertical, -8)
-                    .shadow(color: Color.blackWhite.opacity(0.1), radius: 12, x: 2, y: 2)
-            )
+        }
+    }
+    
+    private var header: some View {
+        HStack(spacing: 16) {
+            Text("Leagues")
+                .fontWeight(.bold)
+                .foregroundColor(Color.purple)
             
-            if isLoading {
-                Rectangle()
-                    .offset(y: 16)
-                    .padding(.horizontal, 16)
-                    .frame(maxHeight: leagues.count > 6 ? 300 : CGFloat(leagues.count) * 50)
-                    .foregroundColor(Color.whiteBlack)
-                    .overlay {
-                        ProgressView()
-                    }
+            Spacer()
+            
+            Button(action: {
+                didPressCloseButton?()
+            }, label: {
+                Image(systemName: "xmark.circle.fill")
+                    .resizable()
+                    .frame(width: 34, height: 34)
+                    .foregroundColor(Color.gray.opacity(0.5))
+            })
+        }
+    }
+    
+    private var listView: some View {
+        ScrollView(showsIndicators: false) {
+            VStack {
+                ForEach($leagues) { league in
+                    LeagueListCell(league: league)
+                }
             }
         }
     }
